@@ -1,32 +1,31 @@
-# Compiler
 CC = g++
 # Compiler flags
-CFLAGS = -Wall -std=c++11
-# GLFW library path
-GLFW_INCLUDE_PATH = -I./libs/GLFW/include
-GLFW_LIB_PATH = -L./libs/GLFW/lib-arm64
+CFLAGS = -Wall -std=c++11 
+# Include directories
+IDIR = -I./libs/GLFW/include -I/opt/homebrew/Cellar/freeglut/3.4.0/include
+# Library directories
+LDIR = -L./libs/GLFW/lib-arm64 -L/opt/homebrew/Cellar/freeglut/3.4.0/lib
 # Libraries to link
-LIBS = -lglfw3
+LIBS = -lglfw3 -lglut -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreVideo
 
 # Source files
-SRCS = ccalc.cc maths.cc
+SRCS = ccalc.cc maths.o
+
 # Object files
 OBJS = $(SRCS:.cc=.o)
-# Executable name
+
+# Executable
 EXEC = ccalc
 
-# Default target
-all: $(EXEC)
-
-# Linking object files
+# Build rule
 $(EXEC): $(OBJS)
-	$(CC) $(CFLAGS) $(GLFW_LIB_PATH) -o $@ $^ $(LIBS)
+	$(CC) $(CFLAGS) $(IDIR) $(LDIR) -o $@ $^ $(LIBS)
 
-# Compiling source files
+# Compile rule for cc files
 %.o: %.cc
-	$(CC) $(CFLAGS) $(GLFW_INCLUDE_PATH) -c -o $@ $<
+	$(CC) $(CFLAGS) $(IDIR) -c -o $@ $<
 
-# Cleaning up
+# Clean rule
 clean:
-	rm -f $(OBJS) $(EXEC)
+	rm -f $(EXEC) $(OBJS)
 

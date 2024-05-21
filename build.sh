@@ -1,1 +1,1 @@
-make && ./ccalc && make clean 
+make && ./ccalc && make clean
